@@ -1,0 +1,43 @@
+[Unit]
+Description=blockehr
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+WorkingDirectory=/var/www/
+ExecStart=/var/www/blockehr-linux-amd64
+
+[Install]
+WantedBy=multi-user.target
+
+# INSTRUCTIONS
+#
+# To install this service
+#----
+# 0. Copy this file to the server
+# 1. soft link the file to the lib systemd location
+# sudo ln -s /home/franco/blockehr.service /lib/systemd/system/
+# 2. Enable the service
+# sudo systemctl enable blockehr.service
+# sudo systemctl start blockehr.service
+# 3. If theres an envs.conf then create the folder
+# by running the following command
+# sudo systemctl edit blockehr
+# 4. Upload envs.conf and edit them with the produciton variables
+# and copy it to /etc/systemd/system/blockehr.service.d/
+# sudo mv /home/deploy/envs.conf /etc/systemd/system/blockehr.service.d/
+# so it goes like /etc/systemd/system/blockehr.service.d/envs.conf
+#
+
+
+
+# Useful commands
+# -----
+# Check the status of the service
+# sudo systemctl status blockehr.service
+# Restart service
+# sudo systemctl status blockehr.service
+# When changing this file run this command to pick up the changes
+# sudo systemctl daemon-reload
+

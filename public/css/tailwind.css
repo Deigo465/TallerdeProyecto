@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+    .btn {
+        @apply rounded-md px-2.5 py-1.5 text-base font-semibold shadow-sm;
+    }
+
+    .btn-primary {
+        @apply bg-primary hover:bg-blue-900 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+    }
+
+    .btn-secondary {
+        @apply bg-blue-200 hover:bg-secondary text-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+    }
+
+    .btn-tertiary {
+        @apply px-2 py-1 shadow-none underline text-blue-950 hover:text-blue-600;
+    }
+
+    .btn-red {
+        @apply bg-red-100 text-red-800 hover:bg-red-200;
+    }
+
+    .form-input{
+        @apply block w-full border border-gray-600 px-2 py-2 ring-1 ring-inset ring-gray-300
+        placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 rounded-sm;
+    }
+
+    .form-label{
+        @apply block text-xl font-semibold mt-1;
+    }
+
+    /* disabled input */
+    input:disabled, select:disabled, textarea:disabled{
+        @apply bg-gray-100 text-gray-600 cursor-not-allowed;
+    }   
+
+}

@@ -1,0 +1,19 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.21.1",
+    "esbuild-plugin-vue3": "^0.4.2",
+    "@deanc/esbuild-plugin-postcss": "^1.0.2",
+    "vue": "^3.4.27",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "postcss-scss": "^4.0.9"
+  },
+  "scripts": {
+    "watch-go": "air",
+    "watch-esbuild": "bun esbuild.mjs",
+    "dev": "concurrently \"bun watch-go\" \"bun watch-esbuild\""
+  }
+}

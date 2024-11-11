@@ -1,0 +1,46 @@
+General:
+  LedgerType: file
+  ListenAddress: 0.0.0.0
+  ListenPort: 7050
+  GenesisMethod: file
+  GenesisFile: /etc/hyperledger/config/genesis.block
+  LocalMSPDir: /var/hyperledger/msp
+  LocalMSPID: OrdererMSP
+
+
+  # # TLS settings (uncomment if TLS is enabled)
+  # TLS:
+  #   Enabled: true
+  #   ClientAuthRequired: true
+  #   PrivateKey: /var/hyperledger/orderer/server.key
+  #   Certificate: /var/hyperledger/orderer/server.crt
+  #   RootCAs:
+  #     - /var/hyperledger/orderer/ca.crt
+
+FileLedger:
+  Location: /var/hyperledger/orderer/ledger
+
+Kafka:
+  Brokers:
+    - kafka.example.com:9092
+
+Debug:
+  BroadcastTraceDir: /var/hyperledger/orderer/broadcast-trace
+  DeliverTraceDir: /var/hyperledger/orderer/deliver-trace
+
+Consensus:
+  # For SOLO or etcd/raft consensus types
+  # This section can be omitted for RAFT as no specific configuration is needed.
+  WALDir: /var/hyperledger/orderer/etcdraft/wal
+  SnapDir: /var/hyperledger/orderer/etcdraft/snapshot
+
+Operations:
+  ListenAddress: 127.0.0.1:9443
+
+Metrics:
+  Provider: prometheus
+  Statsd:
+    Network: udp
+    Address: 127.0.0.1:8125
+    WriteInterval: 10s
+    Prefix: server

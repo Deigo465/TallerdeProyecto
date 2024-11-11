@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+#--------------------#
+#| N time deployment |
+#--------------------#
+# this deploy script builds the executable then uploads all the files to the server
+
+# Set options
+set -o errexit -o nounset -o errtrace -o pipefail
+
+# Edit this values to adapt the deployment script
+SERVER="root@165.232.151.138";
+APP_NAME="blockehr";
+DEPLOY_PATH="/var/www";
+
+function build() {
+    echo "Building executable...$APP_NAME-app"
+    # 1. Bulid the binary
+    ./deploy/go-executable-build.bash bin/$APP_NAME-app
+    echo "Executable built"
+}
+
+function upload(){
+  echo "Deploying to SERVER: $SERVER env"
+  rsync -vauP {public,bin/$APP_NAME-app-linux-amd64} $SERVER:$DEPLOY_PATH;
+  #  You could also deploy the DB adding ",db" to the args above
+  rsync -vauP pkg/web/views $SERVER:$DEPLOY_PATH/pkg/web;
+  # rsync -vauP --relative assets/static $SERVER:$DEPLOY_PATH;
+  echo "Deployed succesfully; Good Job 🥳."
+}
+
+#-----------------------#
+#| First time Deployment |
+#-----------------------#
+function upload_config() {
+  rsync -vauP {hyperledger-network/peerCfg,hyperledger-network/*.yaml,hyperledger-network/*.sh} $SERVER:$DEPLOY_PATH/hyperledger-network;
+}
+
+function upload_db() {
+  rsync -vauP db $SERVER:$DEPLOY_PATH;
+}
+
+# Check if the script is being called with the right arguments
+
+if [ "${1:-}" == "initial" ]; then
+  upload_db
+  upload_config
+  build
+  upload
+elif [ "${1:-}" == "upload-config" ]; then
+  upload_config
+elif [ "${1:-}" == "db" ]; then
+  upload_db
+elif [ "${1:-}" == "blockchain" ]; then
+  # ./script blockchain setup
+  if [ "${2:-}" == "setup" ]; then
+    ssh $SERVER -t "cd /var/www/hyperledger-network && ./network.sh setup"
+  elif [ "${2:-}" == "invoke" ]; then
+    ssh $SERVER -t "cd /var/www/hyperledger-network && ./network.sh invoke"
+  elif [ "${2:-}" == "monitor" ]; then
+    ssh $SERVER -t "cd /var/www/hyperledger-network && ./network.sh monitor"
+  else
+    echo "Invalid argument for blockchain, use 'setup' or 'invoke'"
+  fi
+else
+  build
+  upload
+fi
